@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { ACCESS_TOKEN, PATH_NAME } from "../util/constants";
 import api from "../api/axios";
 
-function Login({ loggedIn, setLoggedIn }) {
+function Login() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -18,9 +19,9 @@ function Login({ loggedIn, setLoggedIn }) {
         userId: id,
         password,
       });
-      localStorage.setItem("accessToken", response.data.accessToken);
-      setLoggedIn(true);
-      navigate("/mypage");
+      localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
+
+      navigate(PATH_NAME.MYPAGE);
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setErrorMsg("가입하지 않았거나, 아이디와 비밀번호가 잘못되었습니다.");
@@ -32,18 +33,13 @@ function Login({ loggedIn, setLoggedIn }) {
     e.preventDefault();
     handleLogin();
   };
-
+  const accessToken = localStorage.getItem(ACCESS_TOKEN);
   useEffect(() => {
-    if (loggedIn) {
-      navigate("/");
+    if (accessToken) {
+      navigate(PATH_NAME.HOME);
+      return;
     }
-  }, [loggedIn, navigate]);
-
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) {
-    navigate("/");
-    return;
-  }
+  }, [accessToken, navigate]);
 
   return (
     <div>
@@ -64,10 +60,9 @@ function Login({ loggedIn, setLoggedIn }) {
         />
         <button type="submit">Login</button>
 
-        <Link to="/signup">회원가입 하기</Link>
+        <Link to={PATH_NAME.SIGN_IN}>회원가입 하기</Link>
       </form>
     </div>
   );
 }
-
 export default Login;

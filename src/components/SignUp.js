@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { PATH_NAME } from "../util/constants";
 import api from "../api/axios";
 
 function SignUp() {
@@ -25,7 +26,7 @@ function SignUp() {
         password,
       });
       console.log("회원가입 성공:", response.data);
-      navigate("/login");
+      navigate(PATH_NAME.LOGIN);
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setErrorMsg("동일한 userId가 존재합니다.");
@@ -63,7 +64,7 @@ function SignUp() {
           type="text"
         />
         <button type="submit">Sing Up</button>
-        <Link to="/login">로그인 하기</Link>
+        <Link to={PATH_NAME.LOGIN}>로그인 하기</Link>
       </form>
     </div>
   );

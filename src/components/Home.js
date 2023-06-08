@@ -1,11 +1,12 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { ACCESS_TOKEN } from "../util/constants";
 
 function Home() {
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = localStorage.getItem(ACCESS_TOKEN);
   const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem(accessToken);
     navigate("/");
   };
 

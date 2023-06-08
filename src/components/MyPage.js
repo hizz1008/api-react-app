@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ACCESS_TOKEN } from "../util/constants";
 import api from "../api/axios";
 
 function MyPage() {
@@ -8,14 +9,9 @@ function MyPage() {
   useEffect(() => {
     const getUserInfo = async () => {
       try {
-        const accessToken = localStorage.getItem("accessToken");
-        if (!accessToken) {
-          navigate("/");
-          return;
-        }
         const response = await api.get("auth/user", {
           headers: {
-            Authorization: localStorage.getItem("accessToken"),
+            Authorization: localStorage.getItem(ACCESS_TOKEN),
           },
         });
         const userData = response.data;
@@ -24,7 +20,6 @@ function MyPage() {
         console.log("유저 정보를 불러오는 데 실패했습니다");
       }
     };
-
     getUserInfo();
   }, [navigate]);
 
